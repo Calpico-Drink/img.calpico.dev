@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "form-data": "^4.0.0",
     "formidable": "^1.2.2",
     "next": "10.0.5",
     "random-string": "^0.2.0",

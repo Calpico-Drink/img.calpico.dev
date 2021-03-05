@@ -1,4 +1,7 @@
-import formidable from 'formidable';
+import formidable from 'formidable'
+import FormData from 'form-data'
+import fs from 'fs'
+import http from 'https'
 
 const zeroPad = num => '00000000'.slice(String(num).length) + num;
 const textToBinary = username => (
@@ -26,16 +29,26 @@ export const config = {
 
 export default async (req, res) => {
   const form = new formidable.IncomingForm();
-  form.uploadDir = "./public";
-  form.keepExtensions = true;
-  form.parse(req, (err, fields, files) => {
-    let path = files.file.path.replace('public\\', '').replace(' ', '')
-    console.log(path)
-    console.log(binaryToZeroWidth(textToBinary(path)))
+  form.parse(req, async (err, fields, files) => {
+    let form = new FormData()
+    form.append('file', files.file)
+    form.append('userkey', '	6sIziL2SkqdDSinMn0z7EgBNKeXUuLRD')
+    var request = http.request({
+      method: 'post',
+      host: 'vgy.me',
+      path: '/upload',
+      headers: form.getHeaders()
+    });
+
+    form.pipe(request);
+
+    request.on('response', function (res) {
+      console.log(res.statusCode);
+    });
     res.json({
       success: true,
       file: {
-        url: 'https://image-orcin.vercel.app/' + binaryToZeroWidth(textToBinary(path)),
+        url: 'https://image-orcin.vercel.app/',
         delete_url: 'test'
       }
     })

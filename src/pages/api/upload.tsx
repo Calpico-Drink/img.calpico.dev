@@ -35,7 +35,7 @@ export default async (req, res) => {
     res.json({
       success: true,
       file: {
-        url: 'http://localhost:3000/' + binaryToZeroWidth(textToBinary(path)),
+        url: 'https://image-orcin.vercel.app/' + binaryToZeroWidth(textToBinary(path)),
         delete_url: 'test'
       }
     })
